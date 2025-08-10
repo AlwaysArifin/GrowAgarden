@@ -5,12 +5,14 @@ import { useTheme } from '../contexts/ThemeContext';
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
     }
+    setMobileMenuOpen(false);
   };
 
   const handleGrowAGarden = () => {
@@ -36,7 +38,7 @@ const Header = () => {
           </div>
         </div>
 
-        {/* Navigation */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
           <button 
             onClick={() => scrollToSection('home')}
@@ -74,8 +76,44 @@ const Header = () => {
           >
             {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
+          
+          {/* Mobile menu button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden text-gray-300 hover:text-white"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
         </div>
       </div>
+
+      {/* Mobile Navigation */}
+      {mobileMenuOpen && (
+        <div className="md:hidden border-t border-border/40 bg-background/95 backdrop-blur">
+          <nav className="container mx-auto px-4 py-4 space-y-2">
+            <button 
+              onClick={() => scrollToSection('home')}
+              className="block w-full text-left py-2 text-gray-300 hover:text-white transition-colors"
+            >
+              Home
+            </button>
+            <button 
+              onClick={() => scrollToSection('products')}
+              className="block w-full text-left py-2 text-gray-300 hover:text-white transition-colors"
+            >
+              Products
+            </button>
+            <button 
+              onClick={() => scrollToSection('contact')}
+              className="block w-full text-left py-2 text-gray-300 hover:text-white transition-colors"
+            >
+              Contact
+            </button>
+          </nav>
+        </div>
+      )}
     </header>
   );
 };
